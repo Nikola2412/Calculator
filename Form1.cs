@@ -18,42 +18,17 @@ namespace Calculator
         }
         double? first = null;
         double? second = null;
-        string r = null;
+        //string r = null;
         string[] o = { "+", "-", "*", "/" };
         int[] numbs = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
         string oper = null;
         private void button1_Click(object sender, EventArgs e)
         {
             var t = ((Button)sender).Text;
-
             textBox1.Text += t;
-
-            Test(textBox1.Text);
         }
         private void Test(string s)
         {
-            int n = s.Length;
-
-            if (n != 0 && o.Any(p => p == s[n - 1].ToString()) && s!="=")
-            {
-                if (first == null && second == null)
-                {
-                    oper = s[n - 1].ToString();
-                    first = double.Parse(s.Remove(n - 1));
-                    textBox1.Clear();
-                    label1.Text = $"{first}";
-                }
-                else if (first != null && second == null)
-                {
-                    oper = s[n - 1].ToString();
-                    second = double.Parse(s.Remove(n - 1));
-                    r = Calculate();
-                    label1.Text = $"{r}";
-                    textBox1.Clear();
-                    first = double.Parse(r);
-                    second = null;
-                }
-            }
 
         }
         private string Calculate()
@@ -81,7 +56,7 @@ namespace Calculator
         {
             first = null;
             second = null;
-            r = null;
+            //r = null;
             label1.Text = "";
             textBox1.Clear();
         }
@@ -110,7 +85,28 @@ namespace Calculator
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             string s = textBox1.Text;
-            Test(s);
+            int n = s.Length;
+            if (n>1 && o.Any(p => p == s[n - 1].ToString()))
+            {
+                if (first == null)
+                {
+                    oper = s.Last().ToString();
+                    textBox1.Text = s.Remove(n - 1);
+                    first = double.Parse(textBox1.Text);
+                    label1.Text = textBox1.Text;
+                    textBox1.Clear();
+                }
+                else
+                {
+                    oper = s.Last().ToString();
+                    textBox1.Text = s.Remove(n - 1);
+                    second = double.Parse(textBox1.Text);
+                    label1.Text = Calculate();
+                    first = double.Parse(label1.Text);
+                    second = null;
+                    textBox1.Clear();
+                }
+            }
         }
 
 
@@ -132,6 +128,15 @@ namespace Calculator
                 second = null;
 
             }
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            oper = ((Button)sender).Text;
+            Calculate();
+            first = double.Parse(textBox1.Text);
+            label1.Text = textBox1.Text;
+            textBox1.Clear();
         }
     }
 }
