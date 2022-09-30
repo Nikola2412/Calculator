@@ -29,7 +29,7 @@ namespace Calculator
         }
         private void Test(string s)
         {
-
+            //
         }
         private string Calculate()
         {
